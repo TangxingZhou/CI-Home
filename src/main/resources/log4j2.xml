@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <properties>
+    <property name="LOG_HOME">target/logs</property>
+    <property name="FILE_NAME">mylog</property>
+    <property name="ROLLING_FILE_NAME">myapp</property>
+    <property name="PATTERN_LAYOUT">%d{yyyy-MM-dd HH:mm:ss.SSS} @%t %-5level "%logger{36}" [%class{36}.%M() #%L]: %msg%n</property>
+  </properties>
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+      <PatternLayout pattern="${PATTERN_LAYOUT}"/>
+    </Console>
+    <File name="File" fileName="${LOG_HOME}/${FILE_NAME}.log" append="false">
+      <PatternLayout pattern="${PATTERN_LAYOUT}"/>
+    </File>
+    <RollingFile name="RollingFile" fileName="${LOG_HOME}/${ROLLING_FILE_NAME}.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/${ROLLING_FILE_NAME}-%d{MM-dd-yyyy}-%i.log.gz">  
+      <PatternLayout pattern="${PATTERN_LAYOUT}"/>
+      <SizeBasedTriggeringPolicy size="2MB"/>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <logger name="TRACE" level="TRACE" additivity="false">
+      <AppenderRef ref="RollingFile"/>
+    </logger>
+    <logger name="DEBUG" level="DEBUG" additivity="false">
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="RollingFile"/>
+    </logger>
+    <logger name="INFO" level="INFO" additivity="false">
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="RollingFile"/>
+    </logger>
+    <logger name="WARN" level="WARN" additivity="false">
+      <appenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="RollingFile"/>
+    </logger>
+    <logger name="ERROR" level="ERROR" additivity="false">
+      <appenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="RollingFile"/>
+    </logger>
+    <Root level="DEBUG">
+      <AppenderRef ref="File"/>
+      <AppenderRef ref="RollingFile"/>
+    </Root>
+  </Loggers>
+</Configuration>
