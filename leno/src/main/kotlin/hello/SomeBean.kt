@@ -1,0 +1,4 @@
+package hello
+
+class SomeBean {
+}
